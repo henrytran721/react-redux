@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import SideMenu from './SideMenu';
 import '../../sass/main.scss';
 import { useDispatch } from 'react-redux';
-import { noteAdded, noteUpdated, noteDeleted } from './NotesSlice';
+import { noteUpdated, noteDeleted } from './NotesSlice';
 import TimeAgo from './TimeAgo';
+import AddNoteForm from './AddNoteForm';
 
 const Note = () => {
     // logic
@@ -17,15 +18,6 @@ const Note = () => {
 
     const onTitleChange = e => setTitle(e.target.value);
     const onContentChange = e => setContent(e.target.value);
-
-    const onSaveNoteClicked = () => {
-        if(title && content) {
-            dispatch(noteAdded(title, content))
-
-            setTitle('')
-            setContent('')
-        }
-    }
     
     const onUpdateNoteClicked = (e) => {
         e.preventDefault();
@@ -46,29 +38,20 @@ const Note = () => {
 
     return(
         <div className='mainNote'>
-            <SideMenu active={active} setActive={setActive} setTitle={setTitle} setContent={setContent} />
+            <SideMenu 
+                active={active} 
+                setActive={setActive} 
+                setTitle={setTitle} 
+                setContent={setContent} 
+            />
             <div>
                 {!active ? 
-                    <form className='noteForm'>
-                    <label htmlFor='title'>Title</label>
-                    <input
-                    type='text'
-                    id='noteTitle'
-                    name='noteTitle'
-                    value={title}
-                    onChange={onTitleChange}
-                    />
-                    <label htmlFor='content'>Notes</label>
-                    <textarea
-                    type='text'
-                    id='noteContent'
-                    name='noteContent'
-                    rows='10'
-                    value={content}
-                    onChange={onContentChange}
-                    />
-                    <button type='button' onClick={onSaveNoteClicked}>Save Note</button>
-                    </form> : 
+                    <AddNoteForm 
+                        title={title}
+                        content={content}
+                        setTitle={setTitle}
+                        setContent={setContent}
+                    /> : 
                         <form className='noteForm'>
                         <label htmlFor='title'>Title</label>
                         <input
